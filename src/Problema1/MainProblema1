@@ -1,1 +1,115 @@
+package Problema1;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class MainProblema1 {
+
+    public static void main(String[] args) {
+
+        List<Prenda> prendas = new ArrayList<>();
+        List<Lote> lotes = new ArrayList<>();
+
+        System.out.println("===== PRUEBA DE EXCEPCIONES - PROBLEMA 1 =====\n");
+
+        System.out.println(">> Prueba: Genero invalido");
+        try {
+            Prenda p1 = new Prenda("Camisa Polo", "Algodon", 120.0, "Nino", "Verano", 500.0);
+            prendas.add(p1);
+        } catch (GeneroInvalidoException e) {
+            System.out.println("   [EXCEPCION CAPTURADA] " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("   Error inesperado: " + e.getMessage());
+        }
+
+        System.out.println("\n>> Prueba: Temporada invalida");
+        try {
+            Prenda p2 = new Prenda("Blusa Floral", "Seda", 150.0, "Femenino", "Monzon", 500.0);
+            prendas.add(p2);
+        } catch (TemporadaInvalidaException e) {
+            System.out.println("   [EXCEPCION CAPTURADA] " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("   Error inesperado: " + e.getMessage());
+        }
+
+        System.out.println("\n>> Prueba: Costo de produccion excede el limite");
+        try {
+            Prenda p3 = new Prenda("Pantalon Formal", "Mezclilla", 600.0, "Masculino", "Invierno", 500.0);
+            prendas.add(p3);
+        } catch (CostoProduccionExcedidoException e) {
+            System.out.println("   [EXCEPCION CAPTURADA] " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("   Error inesperado: " + e.getMessage());
+        }
+
+        System.out.println("\n>> Prueba: Numero de piezas menor a 50");
+        try {
+            Prenda pBase = new Prenda("Camisa Sport", "Algodon", 120.0, "Masculino", "Verano", 500.0);
+            Lote l1 = new Lote(1, 20, LocalDate.of(2026, 4, 10), pBase);
+            lotes.add(l1);
+        } catch (NumeroPiezasInvalidoException e) {
+            System.out.println("   [EXCEPCION CAPTURADA] " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("   Error inesperado: " + e.getMessage());
+        }
+
+        System.out.println("\n>> Prueba: Numero de piezas mayor a 350");
+        try {
+            Prenda pBase = new Prenda("Camisa Sport", "Algodon", 120.0, "Masculino", "Verano", 500.0);
+            Lote l2 = new Lote(2, 400, LocalDate.of(2026, 4, 10), pBase);
+            lotes.add(l2);
+        } catch (NumeroPiezasInvalidoException e) {
+            System.out.println("   [EXCEPCION CAPTURADA] " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("   Error inesperado: " + e.getMessage());
+        }
+
+        System.out.println("\n===== CREACION CORRECTA DE PRENDAS Y LOTES =====\n");
+        try {
+            Prenda pCamisa = new Prenda("Camisa Deportiva", "Algodon", 120.0, "Masculino", "Verano", 500.0);
+            Prenda pPantalon = new Prenda("Pantalon", "Mezclilla", 200.0, "Masculino", "Invierno", 500.0);
+            Prenda pBlusa = new Prenda("Blusa", "Seda", 150.0, "Femenino", "Primavera", 500.0);
+            prendas.add(pCamisa);
+            prendas.add(pPantalon);
+            prendas.add(pBlusa);
+
+            Lote lote1 = new Lote(3, 200, LocalDate.of(2024, 5, 15), pCamisa);
+            Lote lote2 = new Lote(1, 500, LocalDate.of(2024, 1, 10), pPantalon);  // <- se atrapa abajo
+            lotes.add(lote1);
+        } catch (NumeroPiezasInvalidoException e) {
+            System.out.println("   [EXCEPCION CAPTURADA] " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("   Error inesperado: " + e.getMessage());
+        }
+
+        try {
+            Prenda pCamisa = new Prenda("Camisa Deportiva", "Algodon", 120.0, "Masculino", "Verano", 500.0);
+            Prenda pPantalon = new Prenda("Pantalon", "Mezclilla", 200.0, "Masculino", "Invierno", 500.0);
+            Prenda pBlusa = new Prenda("Blusa", "Seda", 150.0, "Femenino", "Primavera", 500.0);
+
+            Lote lote1 = new Lote(3, 200, LocalDate.of(2024, 5, 15), pCamisa);
+            Lote lote2 = new Lote(1, 300, LocalDate.of(2024, 1, 10), pPantalon);
+            Lote lote3 = new Lote(2, 100, LocalDate.of(2024, 3, 20), pBlusa);
+            lotes.add(lote1);
+            lotes.add(lote2);
+            lotes.add(lote3);
+
+            System.out.println("Prendas registradas:");
+            Collections.sort(prendas);
+            System.out.println("Orden por costo: " + prendas);
+
+            System.out.println("\nLotes registrados:");
+            Collections.sort(lotes);
+            System.out.println("Orden por numero de lote: " + lotes);
+
+            System.out.printf("\nCosto total de produccion del lote 1: $%.2f%n", lote1.calcularCostoProduccion());
+            System.out.printf("Monto de recuperacion (por pieza) del lote 1: $%.2f%n", lote1.calcularMontoRecuperacion());
+            System.out.printf("Monto de recuperacion (lote completo) del lote 1: $%.2f%n", lote1.calcularMontoRecuperacionLoteCompleto());
+
+        } catch (Exception e) {
+            System.out.println("   Error inesperado: " + e.getMessage());
+        }
+    }
+}
